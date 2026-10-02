@@ -17,3 +17,9 @@ export const getFavorites = () => lire('quentflix:favoris');
 export const toggleFavorite = (id) => basculer('quentflix:favoris', id);
 export const getSeen = () => lire('quentflix:vus');
 export const toggleSeen = (id) => basculer('quentflix:vus', id);
+
+/** Profil : { name, country } ou null tant qu'il n'a jamais été enregistré. */
+export function getProfile() {
+  try { return JSON.parse(localStorage.getItem('quentflix:profil')); } catch { return null; }
+}
+export const saveProfile = (profil) => ecrire('quentflix:profil', profil);

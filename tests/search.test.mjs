@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { normalize, buildIndex, search, debounce, highlight } from '../src/search.js';
 import { normalizeItem, availabilityBadge } from '../src/catalog.js';
+import { detectCountry } from '../src/profile.js';
 
 const items = [
   { title: 'Amélie', originalTitle: "Le Fabuleux Destin d'Amélie Poulain", popularity: 1 },
@@ -64,4 +65,16 @@ test('badge : seulement si absent en FR et dispo ailleurs', () => {
   assert.equal(availabilityBadge(mk({ FR: false, IT: true, BE: true })), 'Absent en FR · dispo IT, BE');
   assert.equal(availabilityBadge(mk({ FR: true, IT: true })), null);
   assert.equal(availabilityBadge(mk({ FR: false })), null);
+});
+
+test('badge adapté au pays du profil', () => {
+  const it = normalizeItem({ id: 1, media_type: 'movie', title: 'x', availability: { FR: true, IT: false, BE: true } });
+  assert.equal(availabilityBadge(it, 'IT'), 'Absent en IT · dispo FR, BE');
+  assert.equal(availabilityBadge(it, 'BE'), null);
+});
+test('détection du pays : langue puis fuseau horaire, FR par défaut', () => {
+  assert.equal(detectCountry(['fr-BE', 'en'], 'Europe/Paris'), 'BE');
+  assert.equal(detectCountry(['en'], 'Europe/Rome'), 'IT');
+  assert.equal(detectCountry(['de-CH']), 'CH');
+  assert.equal(detectCountry(['en-US'], 'America/New_York'), 'FR');
 });

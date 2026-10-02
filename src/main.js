@@ -1,7 +1,9 @@
 import './style.css';
 import { loadCatalog, availabilityBadge } from './catalog.js';
 import { candidates, pick, sortItems, allGenres } from './tonight.js';
-import { getFavorites, toggleFavorite, getSeen, toggleSeen } from './storage.js';
+import { COUNTRY_NAMES, detectCountry } from './profile.js';
+import { COUNTRIES } from './catalog.js';
+import { getProfile, saveProfile, getFavorites, toggleFavorite, getSeen, toggleSeen } from './storage.js';
 import { buildIndex, search, debounce, highlight } from './search.js';
 
 const MAX_RESULTS = 30;
@@ -14,13 +16,16 @@ const list = document.getElementById('results');
 const status = document.getElementById('status');
 const notice = document.getElementById('notice');
 
+// Profil : lu au démarrage, sinon pays détecté (langue du navigateur, puis fuseau horaire)
+const detected = detectCountry(navigator.languages || [navigator.language], Intl.DateTimeFormat().resolvedOptions().timeZone);
+let profile = getProfile() || { name: '', country: detected, auto: true };
 let index = [];
 let items = [];
 let current = null;
 
 /** Une carte de résultat. Tout texte issu du catalogue passe par highlight() (échappé). */
 function card(item, query) {
-  const badge = availabilityBadge(item);
+  const badge = availabilityBadge(item, profile.country);
   const fav = getFavorites().includes(item.id);
   const kind = item.type === 'series' ? 'Série' : 'Film';
   const meta = [kind, item.year, item.rating ? `★ ${item.rating}` : ''].filter(Boolean).join(' · ');
@@ -51,7 +56,7 @@ function render() {
       return;
     }
     // Parcours sans recherche : titres absents en FR (ou dispo ailleurs), filtrés et triés
-    const all = sortItems(filtered.map((e) => e.item).filter((i) => !i.countries.includes('FR') && i.countries.length), mode);
+    const all = sortItems(filtered.map((e) => e.item).filter((i) => !i.countries.includes(profile.country) && i.countries.length), mode);
     total = all.length; results = all.slice(0, MAX_RESULTS);
   } else if (mode === 'popular') {
     ({ results, total } = search(filtered, query, MAX_RESULTS));
@@ -93,7 +98,7 @@ form.addEventListener('submit', (e) => { e.preventDefault(); input.blur(); });
 
 // « Que regarder ce soir ? » : 2 questions, « Un autre », exclut les titres déjà vus
 function propose() {
-  const liste = candidates(items, { type: $('t-type').value, country: $('t-country').value }, getSeen());
+  const liste = candidates(items, { type: $('t-type').value, country: $('t-country').value, home: profile.country }, getSeen());
   current = pick(liste, current && current.id);
   $('t-result').innerHTML = current ? card(current, '') : '<li class="status">Plus rien à proposer avec ces choix.</li>';
   $('t-actions').hidden = !current;
@@ -130,6 +135,37 @@ $('favs-toggle').addEventListener('click', () => {
 input.addEventListener('input', () => { showFavs = false; $('favs-toggle').setAttribute('aria-pressed', 'false'); });
 
 ['f-genre', 'f-sort'].forEach((id) => $(id).addEventListener('change', () => { showFavs = false; render(); }));
+
+// Profil : prénom et pays ; tout le catalogue (badges, parcours, « ce soir ») s'adapte au pays choisi
+function applyProfile() {
+  $('profile-toggle').textContent = `👤 ${profile.name || 'Profil'} · ${profile.country}`;
+  $('p-name').value = profile.name;
+  $('p-country').innerHTML = COUNTRIES.map((c) => `<option value="${c}">${COUNTRY_NAMES[c]}</option>`).join('');
+  $('p-country').value = profile.country;
+  $('p-hint').textContent = profile.auto
+    ? `Pays détecté automatiquement : ${COUNTRY_NAMES[detected]}. Modifiez-le si besoin.`
+    : 'Le catalogue montre ce qui manque dans ce pays.';
+  const autres = COUNTRIES.filter((c) => c !== profile.country);
+  $('t-country').innerHTML = '<option value="">Peu importe</option>'
+    + autres.map((c) => `<option value="${c}">${COUNTRY_NAMES[c]}</option>`).join('');
+  $('mission').textContent = `Titres absents de Netflix ${COUNTRY_NAMES[profile.country]} mais disponibles ailleurs.`;
+  current = null; $('t-result').innerHTML = ''; $('t-actions').hidden = true;
+  if (!showFavs) render();
+}
+$('profile-toggle').addEventListener('click', () => {
+  const ouvert = $('profile-form').hidden;
+  $('profile-form').hidden = !ouvert;
+  $('profile-toggle').setAttribute('aria-expanded', String(ouvert));
+});
+$('profile-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  profile = { name: $('p-name').value.trim().slice(0, 30), country: $('p-country').value };
+  saveProfile(profile);
+  $('profile-form').hidden = true;
+  $('profile-toggle').setAttribute('aria-expanded', 'false');
+  applyProfile();
+});
+applyProfile();
 
 init();
 

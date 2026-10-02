@@ -94,3 +94,4 @@ mark { background: rgb(229 9 20 / .35); color: inherit; border-radius: 3px; padd
 #favs-toggle[aria-pressed="true"] { border-color: var(--accent); }
 .filters { display: flex; gap: 8px; margin: 0 0 8px; }
 .filters select { flex: 1; min-width: 0; font-size: 16px; min-height: 44px; background: var(--surface); color: inherit; border: 1px solid #333; border-radius: 8px; }
+.tonight input[type="text"] { font-size: 16px; min-height: 44px; margin-left: 8px; padding: 0 10px; background: var(--surface); color: inherit; border: 1px solid #333; border-radius: 8px; }

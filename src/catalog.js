@@ -40,10 +40,10 @@ export async function loadCatalog(url) {
 
 /**
  * Texte du badge « Absent en FR · dispo IT, BE ».
- * Retourne null sauf si le titre est indisponible en France ET disponible ailleurs.
+ * Retourne null sauf si le titre est indisponible dans le pays de l'utilisateur (`home`, FR par défaut) ET disponible ailleurs.
  */
-export function availabilityBadge(item) {
-  if (item.countries.includes('FR')) return null;
-  const elsewhere = item.countries.filter((c) => c !== 'FR');
-  return elsewhere.length ? `Absent en FR · dispo ${elsewhere.join(', ')}` : null;
+export function availabilityBadge(item, home = 'FR') {
+  if (item.countries.includes(home)) return null;
+  const elsewhere = item.countries.filter((c) => c !== home);
+  return elsewhere.length ? `Absent en ${home} · dispo ${elsewhere.join(', ')}` : null;
 }

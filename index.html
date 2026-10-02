@@ -39,6 +39,16 @@
         <select id="f-sort" aria-label="Tri"><option value="popular">Plus populaires</option><option value="recent">Plus récents</option><option value="rating">Mieux notés</option></select>
       </div>
       <button type="button" id="favs-toggle" class="btn" aria-pressed="false">♥ Mes favoris</button>
+      <section class="tonight" aria-label="Profil">
+        <button type="button" id="profile-toggle" class="btn" aria-expanded="false">👤 Profil</button>
+        <form id="profile-form" hidden>
+          <label>Prénom (facultatif) <input id="p-name" type="text" maxlength="30" autocomplete="given-name" /></label>
+          <label>Mon pays <select id="p-country"></select></label>
+          <p id="p-hint" class="meta"></p>
+          <button type="submit" class="btn primary">Enregistrer</button>
+        </form>
+        <p id="mission" class="meta"></p>
+      </section>
       <p id="notice" class="notice" hidden></p>
       <p id="status" class="status" aria-live="polite"></p>
       <ul id="results" class="results" aria-label="Résultats de recherche" aria-live="polite"></ul>

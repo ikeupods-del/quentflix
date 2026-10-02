@@ -1,7 +1,7 @@
 // Filtre « Que regarder ce soir ? » : logique pure (sans DOM).
-/** Titres absents en FR et disponibles dans un autre pays, selon les choix, hors titres déjà vus. */
-export function candidates(items, { type = '', country = '' } = {}, seen = []) {
-  return items.filter((it) => !it.countries.includes('FR')
+/** Titres absents du pays de l'utilisateur (home) et disponibles dans un autre pays, selon les choix, hors titres déjà vus. */
+export function candidates(items, { type = '', country = '', home = 'FR' } = {}, seen = []) {
+  return items.filter((it) => !it.countries.includes(home)
     && it.countries.length > 0
     && (!type || it.type === type)
     && (!country || it.countries.includes(country))

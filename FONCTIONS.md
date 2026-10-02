@@ -4,7 +4,7 @@ Application web mobile (site statique) : titres Netflix **absents en France mais
 
 ## Existant
 1. Recherche instantanée (titre et titre original), sans accents ni majuscules, tous les mots dans n'importe quel ordre, surlignage, 30 résultats max.
-2. Badge « Absent en FR · dispo IT, BE, CH » sur chaque titre concerné.
+2. Badge « Absent dans votre pays · dispo ailleurs » sur chaque titre concerné.
 3. « Que regarder ce soir ? » : choix film/série et pays, proposition au hasard, « Un autre », « Déjà vu » (le titre n'est plus reproposé).
 4. Favoris : cœur sur chaque titre et liste « Mes favoris ».
 5. Mémoire locale sur le téléphone (favoris, déjà vu), rien n'est envoyé.
