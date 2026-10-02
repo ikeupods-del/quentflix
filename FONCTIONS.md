@@ -10,10 +10,12 @@ Application web mobile (site statique) : titres Netflix **absents en France mais
 5. Mémoire locale sur le téléphone (favoris, déjà vu), rien n'est envoyé.
 6. Affiche, type (film/série), année.
 7. Mise à jour automatique des données toutes les 12 h, publication automatique.
-8. Thème sombre type cinéma, conçu pour mobile, accessible (lecteurs d'écran).
+8. Filtre par genre, tri (populaires, récents, mieux notés) et note ★ sur chaque titre.
+9. Installable sur l’écran d’accueil (application PWA).
+10. Thème sombre type cinéma, conçu pour mobile, accessible (lecteurs d'écran).
 
 ## Limites
-Pas de compte, pas de synchronisation entre appareils, pas de notifications, pas de fiche détaillée (synopsis, bande-annonce, note), pas d'installation sur l'écran d'accueil, pas de filtre par genre.
+Pas de compte, pas de synchronisation entre appareils, pas de notifications, pas de synopsis ni de bande-annonce.
 
 ## Question à poser à une autre IA
 « Voici mon application et ses fonctions. Quelles fonctions ajouter pour la rendre plus utile, en restant simple, gratuite, légale et sans serveur ? Classe par effet pour l'utilisateur et par facilité. »

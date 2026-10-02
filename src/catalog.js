@@ -8,7 +8,7 @@ const POSTER_BASE = 'https://image.tmdb.org/t/p/w154';
 /**
  * Seul endroit qui connaît le schéma brut du JSON (voir scripts/fetch-tmdb.mjs).
  * Le reste de l'application ne manipule que l'objet normalisé retourné ici :
- * { id, type, title, originalTitle, year, poster, popularity, countries }
+ * { id, type, title, originalTitle, year, poster, popularity, rating, genres, countries }
  */
 export function normalizeItem(raw) {
   const availability = raw.availability || {};
@@ -20,6 +20,8 @@ export function normalizeItem(raw) {
     year: raw.year || null,
     poster: raw.poster_path ? POSTER_BASE + raw.poster_path : null,
     popularity: raw.popularity || 0,
+    rating: raw.rating || 0,
+    genres: raw.genres || [],
     countries: COUNTRIES.filter((c) => availability[c]),
   };
 }

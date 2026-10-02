@@ -29,6 +29,13 @@ async function api(path, params) {
   throw new Error(`TMDB injoignable sur ${path}`);
 }
 
+// Noms des genres (films et séries), pour ne stocker que du texte dans le catalogue.
+const genreNames = {};
+for (const type of ['movie', 'tv']) {
+  const { genres } = await api(`/genre/${type}/list`, { language: 'fr-FR' });
+  for (const g of genres) genreNames[g.id] = g.name;
+}
+
 /** Parcourt toutes les pages « discover » d'un type pour un pays. */
 async function discover(type, country) {
   const base = {
@@ -66,6 +73,8 @@ for (const type of TYPES) {
           year: date ? Number(date.slice(0, 4)) : null,
           poster_path: r.poster_path || null,
           popularity: Math.round(r.popularity || 0),
+          rating: Math.round((r.vote_average || 0) * 10) / 10,
+          genres: (r.genre_ids || []).map((g) => genreNames[g]).filter(Boolean),
           availability: { FR: false, IT: false, BE: false, CH: false },
         });
       }

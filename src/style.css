@@ -92,3 +92,5 @@ mark { background: rgb(229 9 20 / .35); color: inherit; border-radius: 3px; padd
 .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .fav { margin-top: 6px; min-width: 44px; min-height: 44px; font-size: 22px; color: var(--accent); background: none; border: 0; cursor: pointer; }
 #favs-toggle[aria-pressed="true"] { border-color: var(--accent); }
+.filters { display: flex; gap: 8px; margin: 0 0 8px; }
+.filters select { flex: 1; min-width: 0; font-size: 16px; min-height: 44px; background: var(--surface); color: inherit; border: 1px solid #333; border-radius: 8px; }
