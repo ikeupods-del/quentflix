@@ -1,0 +1,12 @@
+{
+  "sample": true,
+  "generated_at": null,
+  "items": [
+    { "id": 1, "media_type": "movie", "title": "Amélie", "original_title": "Le Fabuleux Destin d'Amélie Poulain", "year": 2001, "poster_path": null, "popularity": 50, "availability": { "FR": false, "IT": true, "BE": true, "CH": false } },
+    { "id": 2, "media_type": "movie", "title": "Tom & Jerry", "original_title": "Tom & Jerry", "year": 2021, "poster_path": null, "popularity": 30, "availability": { "FR": true, "IT": true, "BE": false, "CH": false } },
+    { "id": 3, "media_type": "tv", "title": "Dark", "original_title": "Dark", "year": 2017, "poster_path": null, "popularity": 80, "availability": { "FR": false, "IT": false, "BE": false, "CH": true } },
+    { "id": 4, "media_type": "tv", "title": "La Casa de Papel", "original_title": "La Casa de Papel", "year": 2017, "poster_path": null, "popularity": 90, "availability": { "FR": true, "IT": true, "BE": true, "CH": true } },
+    { "id": 5, "media_type": "movie", "title": "Cœur de pirate", "original_title": "Heart of a Pirate", "year": 2010, "poster_path": null, "popularity": 10, "availability": { "FR": false, "IT": true, "BE": false, "CH": false } },
+    { "id": 6, "media_type": "movie", "title": "Film indisponible partout", "original_title": "Nowhere", "year": 2020, "poster_path": null, "popularity": 5, "availability": { "FR": false, "IT": false, "BE": false, "CH": false } }
+  ]
+}

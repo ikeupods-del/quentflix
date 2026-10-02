@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0b0f" />
+    <title>Quentflix — Netflix ailleurs en Europe</title>
+    <meta name="description" content="Séries et films absents de Netflix France mais disponibles en Italie, Belgique ou Suisse." />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1 class="brand">Quent<span>flix</span></h1>
+      <form class="search" role="search" id="search-form">
+        <label class="sr-only" for="q">Rechercher un titre</label>
+        <input id="q" type="search" placeholder="Rechercher un film ou une série…"
+               autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" />
+      </form>
+    </header>
+
+    <main>
+      <p id="notice" class="notice" hidden></p>
+      <p id="status" class="status" aria-live="polite"></p>
+      <ul id="results" class="results" aria-label="Résultats de recherche" aria-live="polite"></ul>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

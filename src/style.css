@@ -1,0 +1,86 @@
+/* Palette « cinéma » : fond quasi noir, accent rouge, texte clair. */
+:root {
+  --bg: #0b0b0f;
+  --surface: #16161d;
+  --surface-2: #1f1f29;
+  --border: #2a2a36;
+  --text: #f2f2f5;
+  --muted: #9a9aab;
+  --accent: #e50914;
+  --warn: #ffb020;
+  --radius: 12px;
+  --gap: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: dark; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Barre sticky : reste visible pendant le défilement. */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  padding: calc(env(safe-area-inset-top) + 10px) 16px 12px;
+  background: linear-gradient(var(--bg) 85%, transparent);
+}
+
+.brand { margin: 0 0 10px; font-size: 1.25rem; letter-spacing: .02em; }
+.brand span { color: var(--accent); }
+
+.search input {
+  width: 100%;
+  min-height: 48px;           /* zone tactile confortable */
+  padding: 0 16px;
+  font-size: 16px;            /* 16px minimum : évite le zoom automatique d'iOS */
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+}
+.search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgb(229 9 20 / .25); }
+.search input::placeholder { color: var(--muted); }
+
+main { padding: 0 16px 32px; max-width: 720px; margin: 0 auto; }
+
+.notice { margin: 0 0 12px; padding: 10px 12px; font-size: .875rem; color: var(--warn);
+  background: var(--surface); border: 1px dashed var(--warn); border-radius: var(--radius); }
+
+.status { margin: 4px 0 12px; color: var(--muted); font-size: .9rem; }
+
+.results { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--gap); }
+
+.card {
+  display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center;
+  min-height: 72px; padding: 10px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+}
+
+.poster {
+  width: 56px; aspect-ratio: 2 / 3; object-fit: cover;
+  border-radius: 8px; background: var(--surface-2);
+  display: grid; place-items: center; color: var(--muted); font-size: 1.25rem;
+}
+
+.card h2 { margin: 0; font-size: 1rem; font-weight: 600; overflow-wrap: anywhere; }
+.meta { margin: 2px 0 0; color: var(--muted); font-size: .85rem; overflow-wrap: anywhere; }
+
+mark { background: rgb(229 9 20 / .35); color: inherit; border-radius: 3px; padding: 0 1px; }
+
+.badge {
+  display: inline-block; margin-top: 6px; padding: 4px 10px;
+  font-size: .8rem; font-weight: 600; color: #fff;
+  background: var(--accent); border-radius: 999px;
+}
