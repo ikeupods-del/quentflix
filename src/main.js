@@ -1,7 +1,7 @@
 import './style.css';
 import { loadCatalog, availabilityBadge } from './catalog.js';
 import { candidates, pick } from './tonight.js';
-import { getSeen, toggleSeen } from './storage.js';
+import { getFavorites, toggleFavorite, getSeen, toggleSeen } from './storage.js';
 import { buildIndex, search, debounce, highlight } from './search.js';
 
 const MAX_RESULTS = 30;
@@ -20,6 +20,7 @@ let current = null;
 /** Une carte de résultat. Tout texte issu du catalogue passe par highlight() (échappé). */
 function card(item, query) {
   const badge = availabilityBadge(item);
+  const fav = getFavorites().includes(item.id);
   const kind = item.type === 'series' ? 'Série' : 'Film';
   const meta = [kind, item.year].filter(Boolean).join(' · ');
   const original = item.originalTitle && item.originalTitle !== item.title
@@ -31,6 +32,7 @@ function card(item, query) {
     <h2>${highlight(item.title, query)}</h2>${original}
     <p class="meta">${meta}</p>
     ${badge ? `<span class="badge">${badge}</span>` : ''}
+    <button type="button" class="fav" data-id="${item.id}" aria-pressed="${fav}" aria-label="${fav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">${fav ? '♥' : '♡'}</button>
   </div></li>`;
 }
 
@@ -91,5 +93,26 @@ $('tonight-toggle').addEventListener('click', () => {
 $('t-go').addEventListener('click', propose);
 $('t-other').addEventListener('click', propose);
 $('t-seen').addEventListener('click', () => { if (current) { toggleSeen(current.id); propose(); } });
+
+// Favoris : bouton cœur sur chaque carte + liste « Mes favoris »
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('.fav');
+  if (!b) return;
+  toggleFavorite(Number(b.dataset.id) || b.dataset.id);
+  if (showFavs) showFavorites(); else { render(); if (current) propose(); }
+});
+let showFavs = false;
+function showFavorites() {
+  showFavs = true;
+  const ids = getFavorites();
+  const liste = items.filter((it) => ids.includes(it.id));
+  list.innerHTML = liste.map((it) => card(it, '')).join('');
+  status.textContent = liste.length ? `${liste.length} favori${liste.length > 1 ? 's' : ''}` : 'Aucun favori : touchez ♡ sur un titre.';
+}
+$('favs-toggle').addEventListener('click', () => {
+  if (showFavs) { showFavs = false; render(); } else showFavorites();
+  $('favs-toggle').setAttribute('aria-pressed', String(showFavs));
+});
+input.addEventListener('input', () => { showFavs = false; $('favs-toggle').setAttribute('aria-pressed', 'false'); });
 
 init();
