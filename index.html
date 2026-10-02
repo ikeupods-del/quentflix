@@ -18,6 +18,19 @@
     </header>
 
     <main>
+      <section class="tonight" aria-label="Que regarder ce soir ?">
+        <button type="button" id="tonight-toggle" class="btn" aria-expanded="false">🎲 Que regarder ce soir ?</button>
+        <div id="tonight-panel" hidden>
+          <label>Quoi ? <select id="t-type"><option value="">Film ou série</option><option value="movie">Film</option><option value="series">Série</option></select></label>
+          <label>Où ? <select id="t-country"><option value="">Peu importe</option><option value="IT">Italie</option><option value="BE">Belgique</option><option value="CH">Suisse</option></select></label>
+          <button type="button" id="t-go" class="btn primary">Proposer</button>
+          <ul id="t-result" class="results" aria-live="polite"></ul>
+          <div id="t-actions" hidden>
+            <button type="button" id="t-other" class="btn">Un autre</button>
+            <button type="button" id="t-seen" class="btn">Déjà vu</button>
+          </div>
+        </div>
+      </section>
       <p id="notice" class="notice" hidden></p>
       <p id="status" class="status" aria-live="polite"></p>
       <ul id="results" class="results" aria-label="Résultats de recherche" aria-live="polite"></ul>

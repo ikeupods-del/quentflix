@@ -1,5 +1,7 @@
 import './style.css';
 import { loadCatalog, availabilityBadge } from './catalog.js';
+import { candidates, pick } from './tonight.js';
+import { getSeen, toggleSeen } from './storage.js';
 import { buildIndex, search, debounce, highlight } from './search.js';
 
 const MAX_RESULTS = 30;
@@ -12,6 +14,8 @@ const status = document.getElementById('status');
 const notice = document.getElementById('notice');
 
 let index = [];
+let items = [];
+let current = null;
 
 /** Une carte de résultat. Tout texte issu du catalogue passe par highlight() (échappé). */
 function card(item, query) {
@@ -54,7 +58,8 @@ async function init() {
   status.textContent = 'Chargement du catalogue…';
   try {
     const catalog = await loadCatalog(`${import.meta.env.BASE_URL}data/catalog.json`);
-    index = buildIndex(catalog.items); // construit une seule fois
+    items = catalog.items;
+    index = buildIndex(items); // construit une seule fois
     if (catalog.sample) {
       notice.textContent = "Données d'exemple : le vrai catalogue est généré toutes les 12 h avec la clé TMDB.";
       notice.hidden = false;
@@ -68,5 +73,23 @@ async function init() {
 
 input.addEventListener('input', debounce(render, DEBOUNCE_MS));
 form.addEventListener('submit', (e) => { e.preventDefault(); input.blur(); });
+
+// « Que regarder ce soir ? » : 2 questions, « Un autre », exclut les titres déjà vus
+const $ = (id) => document.getElementById(id);
+function propose() {
+  const liste = candidates(items, { type: $('t-type').value, country: $('t-country').value }, getSeen());
+  current = pick(liste, current && current.id);
+  $('t-result').innerHTML = current ? card(current, '') : '<li class="status">Plus rien à proposer avec ces choix.</li>';
+  $('t-actions').hidden = !current;
+  $('t-other').hidden = liste.length < 2;
+}
+$('tonight-toggle').addEventListener('click', () => {
+  const ouvert = $('tonight-panel').hidden;
+  $('tonight-panel').hidden = !ouvert;
+  $('tonight-toggle').setAttribute('aria-expanded', String(ouvert));
+});
+$('t-go').addEventListener('click', propose);
+$('t-other').addEventListener('click', propose);
+$('t-seen').addEventListener('click', () => { if (current) { toggleSeen(current.id); propose(); } });
 
 init();

@@ -84,3 +84,9 @@ mark { background: rgb(229 9 20 / .35); color: inherit; border-radius: 3px; padd
   font-size: .8rem; font-weight: 600; color: #fff;
   background: var(--accent); border-radius: 999px;
 }
+
+.tonight { margin: 0 0 12px; }
+.tonight label { display: block; margin: 8px 0; color: var(--muted, #aaa); }
+.tonight select { font-size: 16px; min-height: 44px; margin-left: 8px; background: var(--surface); color: inherit; border: 1px solid #333; border-radius: 8px; }
+.btn { min-height: 44px; padding: 0 14px; margin: 4px 6px 4px 0; font-size: 16px; color: inherit; background: var(--surface); border: 1px solid #333; border-radius: 8px; cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
